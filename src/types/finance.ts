@@ -45,10 +45,12 @@ export interface YearFinancials {
   regularStaff2BaseSalary: number;    // 일반직원 2 기본급 (3차년 270만, 매년 5% 인상)
   totalGrossPayroll: number;          // 총 급여액 (4대 보험 산정 기준)
   socialInsuranceCost: number;        // 4대 보험 사측 부담금 (9.5% 정산)
-  managerCorporateCardCost: number;   // 전담관리자 법카 (식대, 음료, 접대)
-  educatorMealAllowance: number;      // 평생교육사 비과세 식대보조금
+  managerCorporateCardCost: number;   // 전담관리자 법카 (유류비, 식대, 접대비 월 70만 = 연 840만)
+  educatorMealAllowance: number;      // 평생교육사 비과세 식대보조금 (연 240만)
   totalLaborAndWelfareCost: number;   // 인건비 및 복리후생비 소계
   
+  officeSuppliesCost: number;         // 사무용품 구입비 (월 5만 = 연 60만)
+  officeFurnishingsDepreciation: number; // 사무실 집기·비품 등 (2,000만 원, 5년 상각 연 400만)
   annualContentDevCost: number;       // 매년 콘텐츠 1개 추가 개발비 (2,000만 원)
   initialServerSetupCost: number;     // 1차년 초기 서버구축비 (1,500만 원)
   serverAndFixedCost: number;         // 서버 유지보수 및 고정 운영비
@@ -58,6 +60,10 @@ export interface YearFinancials {
   operatingProfit: number;
   operatingMarginPct: number;
   netProfit: number;
+  
+  // Initial Capital Capex (자산 취득 현금 유출)
+  officeDepositOutflow: number;       // 사무실 보증금 (1,000만 원 자산 취득 현금 유출)
+  officeFurnishingsOutflow: number;   // 사무실 집기·비품 취득 현금 유출 (2,000만 원)
   
   // Cash Flow (오프라인+온라인 배당 유출 전액 반영)
   cashInflow: number;
@@ -74,6 +80,12 @@ export interface SimulationParams {
   eventCost: number;           // 1회당 200만 원
   traineesPerEvent: number;    // 회당 100명 (50회)
   
+  // Office Setup & Operations (초기 3,000만 원 + 사무용품 + 법카)
+  officeDeposit: number;               // 사무실 보증금 (1,000만 원)
+  officeFurnishings: number;           // 사무실 집기·비품 (2,000만 원)
+  monthlyOfficeSupplies: number;       // 사무용품 구입비 (월 5만 원)
+  managerCorporateCardMonthly: number; // 법카 한도 (월 70만 원: 유류비, 식대, 접대비)
+  
   // Labor & Welfare
   managerMonthlySalary: number;        // 전담관리자 월 급여 (300만 원)
   educatorMonthlySalary: number;       // 평생교육사 월 급여 (2차년도부터 300만 원)
@@ -81,7 +93,6 @@ export interface SimulationParams {
   regularStaff2StartingSalary: number; // 일반직원 2 초기 월급 (3차년 270만 원)
   wageHikeRate: number;                // 일반직원 매년 임금 인상률 (5%)
   socialInsuranceRate: number;         // 4대보험 요율 (9.5%)
-  managerCorporateCardMonthly: number; // 법카 (월 80만)
   educatorMealMonthly: number;         // 식대보조 (월 20만)
 
   // Online Content & Dividend Model (원격교육 수강료 6만원, 배당 2.5만원)

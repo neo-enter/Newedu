@@ -44,7 +44,7 @@ export const Header: React.FC<HeaderProps> = ({
                 </span>
               </div>
               <p className="text-xs text-slate-500">
-                초기 자본금 3억 원 · 온라인 수강료 6만 원 · 투자자 배당 2.5만 원 · 4인 조직 확충(5% 임금인상/4대보험 정산) · 자본 잔액 추적
+                초기 자본금 3억 원 · 사무실 개설(3천만) · 온라인 수강 6만/배당 2.5만 · 4인 조직 확충 · 자본 잔액 추적
               </p>
             </div>
           </div>

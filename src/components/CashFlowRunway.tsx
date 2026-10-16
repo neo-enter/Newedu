@@ -66,7 +66,7 @@ export const CashFlowRunway: React.FC<CashFlowRunwayProps> = ({
               </h2>
             </div>
             <p className="text-xs text-slate-500 mt-1">
-              4인 전문 인력 확충 및 4대 보험 정산, 5년간 총 6억 2,500만 원의 투자자 배당을 전액 지급하면서도, 3차년도 저점(1.04억 원)을 통과하여 5차년도에 자본금 잔액 1억 8,486만 원을 안정적으로 보존합니다.
+              초기 사무실 개설(3,000만 원), 4인 전문 인력 확충 및 4대 보험 정산, 5년간 총 6억 2,500만 원의 투자자 배당을 전액 지급하면서도, 3차년도 저점(7,589만 원)을 통과하여 5차년도에 자본금 잔액 1억 5,786만 원을 안정적으로 보존합니다.
             </p>
           </div>
 
@@ -272,6 +272,28 @@ export const CashFlowRunway: React.FC<CashFlowRunwayProps> = ({
                   </td>
                 ))}
               </tr>
+              <tr className="text-xs text-slate-600">
+                <td className="py-1 px-6 pl-8">· 사무용품 구입비 (월 5만 = 연 60만)</td>
+                {financials.map((f) => (
+                  <td key={f.year} className="py-1 px-3 text-right font-mono">{formatKRW(f.officeSuppliesCost)}</td>
+                ))}
+              </tr>
+              <tr className="text-xs text-blue-900 bg-blue-50/40 font-medium">
+                <td className="py-1 px-6 pl-8">· 초기 사무실 보증금 (임차보증금 자산 취득)</td>
+                {financials.map((f) => (
+                  <td key={f.year} className="py-1 px-3 text-right font-mono">
+                    {f.officeDepositOutflow > 0 ? formatKRW(f.officeDepositOutflow) : '-'}
+                  </td>
+                ))}
+              </tr>
+              <tr className="text-xs text-blue-900 bg-blue-50/40 font-medium">
+                <td className="py-1 px-6 pl-8">· 초기 집기·비품 등 구입 (시설 인테리어 Capex)</td>
+                {financials.map((f) => (
+                  <td key={f.year} className="py-1 px-3 text-right font-mono">
+                    {f.officeFurnishingsOutflow > 0 ? formatKRW(f.officeFurnishingsOutflow) : '-'}
+                  </td>
+                ))}
+              </tr>
               <tr className="text-xs text-indigo-900 bg-indigo-50/50 font-medium">
                 <td className="py-1 px-6 pl-8">· 콘텐츠 추가 개발비 (매년 2,000만 원 R&D)</td>
                 {financials.map((f) => (
@@ -350,11 +372,11 @@ export const CashFlowRunway: React.FC<CashFlowRunwayProps> = ({
           <Award className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
           <div className="text-xs text-emerald-950 space-y-1">
             <span className="font-bold">
-              [CFO 5개년 유동성 및 자본금 잔액 총평: 4인 전문 조직 확충 속 6.25억 배당 및 1.85억 잔액 방어]
+              [CFO 5개년 유동성 및 자본금 잔액 총평: 사무실 개설(3천만)·4인 조직 확충 속 6.25억 배당 및 1.58억 잔액 방어]
             </span>
             <p className="text-emerald-900 leading-relaxed text-xs">
-              초기 자본금 3억 원은 평생교육사(300만) 및 일반직원 2명(270만 시작, 매년 5% 인상)의 인력 확충과 4대 보험 정산, 그리고 <strong>총 6억 2,500만 원의 투자자 배당</strong>을 전액 지출하는 강력한 확장 정책 속에서도, <strong>3차년도 말 1억 409만 원(보존율 34.7%)으로 저점을 완벽히 방어</strong>합니다.
-              이후 4차년도부터 순현금 유입(+979만 원)으로 반등하여, <strong>5차년도 말에는 자본금 잔액 1억 8,486만 원(자본 보존율 61.6%)</strong>의 탄탄한 유동성을 유지하며 무차입 자생 경영을 실현합니다.
+              초기 자본금 3억 원은 사무실 보증금 및 집기·비품(총 3,000만 원), 평생교육사(300만) 및 일반직원 2명(270만 시작, 매년 5% 인상)의 인력 확충과 4대 보험 정산, 그리고 <strong>총 6억 2,500만 원의 투자자 배당</strong>을 전액 지출하는 강력한 투자 집행 속에서도, <strong>3차년도 말 7,589만 원(보존율 25.3% + 보증금 자산 1,000만 원)으로 저점을 완벽히 방어</strong>합니다.
+              이후 4차년도부터 순현금 유입(+1,039만 원)으로 반등하여, <strong>5차년도 말에는 자본금 현금 잔액 1억 5,786만 원(자본 보존율 52.6%)</strong>의 탄탄한 유동성을 유지하며 무차입 자생 경영을 실현합니다.
             </p>
           </div>
         </div>

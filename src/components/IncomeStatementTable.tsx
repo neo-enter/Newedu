@@ -270,17 +270,39 @@ export const IncomeStatementTable: React.FC<IncomeStatementTableProps> = ({
             </tr>
 
             <tr className="text-slate-500 text-[11px]">
-              <td className="py-1 px-8 pl-10">· 복리후생비 (전담관리자 법카 + 평생교육사 식대)</td>
-              {showFormulas && <td className="py-1 px-2.5 text-slate-400">법카 월 80만(960만) + 식대 월 20만(240만)</td>}
+              <td className="py-1 px-8 pl-10">· 법인카드 (유류비, 식대, 접대비)</td>
+              {showFormulas && <td className="py-1 px-2.5 text-slate-400">월 70만 원 한도 × 12개월 (연 840만)</td>}
               {financials.map((f) => (
-                <td key={f.year} className="py-1 px-2.5 text-right font-mono">
-                  {formatKRW(f.managerCorporateCardCost + f.educatorMealAllowance)}
-                </td>
+                <td key={f.year} className="py-1 px-2.5 text-right font-mono">{formatKRW(f.managerCorporateCardCost)}</td>
+              ))}
+            </tr>
+
+            <tr className="text-slate-500 text-[11px]">
+              <td className="py-1 px-8 pl-10">· 평생교육사 비과세 식대보조금</td>
+              {showFormulas && <td className="py-1 px-2.5 text-slate-400">월 20만 원 × 12개월 (연 240만)</td>}
+              {financials.map((f) => (
+                <td key={f.year} className="py-1 px-2.5 text-right font-mono">{formatKRW(f.educatorMealAllowance)}</td>
+              ))}
+            </tr>
+
+            <tr className="text-slate-600">
+              <td className="py-1.5 px-6 pl-8">2) 사무용품 구입비 (소모품비)</td>
+              {showFormulas && <td className="py-1.5 px-2.5 text-slate-500">월 5만 원 × 12개월 (연 60만 원)</td>}
+              {financials.map((f) => (
+                <td key={f.year} className="py-1.5 px-2.5 text-right font-mono">{formatKRW(f.officeSuppliesCost)}</td>
+              ))}
+            </tr>
+
+            <tr className="text-slate-600">
+              <td className="py-1.5 px-6 pl-8">3) 사무실 집기·비품 등 감가상각비</td>
+              {showFormulas && <td className="py-1.5 px-2.5 text-slate-500">집기 2천만 원 / 5년 정액상각 (연 400만)</td>}
+              {financials.map((f) => (
+                <td key={f.year} className="py-1.5 px-2.5 text-right font-mono">{formatKRW(f.officeFurnishingsDepreciation)}</td>
               ))}
             </tr>
 
             <tr className="text-indigo-950 bg-indigo-50/50 font-semibold">
-              <td className="py-1.5 px-6 pl-8">2) 콘텐츠 추가 개발비 (R&D)</td>
+              <td className="py-1.5 px-6 pl-8">4) 콘텐츠 추가 개발비 (R&D)</td>
               {showFormulas && <td className="py-1.5 px-2.5 text-indigo-700">매년 1개 과정 2,000만 원</td>}
               {financials.map((f) => (
                 <td key={f.year} className="py-1.5 px-2.5 text-right font-mono font-bold text-indigo-700">
@@ -290,7 +312,7 @@ export const IncomeStatementTable: React.FC<IncomeStatementTableProps> = ({
             </tr>
 
             <tr className="text-slate-600">
-              <td className="py-1.5 px-6 pl-8">3) 서버 구축 및 고정운영비</td>
+              <td className="py-1.5 px-6 pl-8">5) 서버 구축 및 고정운영비</td>
               {showFormulas && <td className="py-1.5 px-2.5 text-slate-500">서버 회선, 보안, 유지보수</td>}
               {financials.map((f) => (
                 <td key={f.year} className="py-1.5 px-2.5 text-right font-mono">
@@ -359,11 +381,12 @@ export const IncomeStatementTable: React.FC<IncomeStatementTableProps> = ({
       <div className="p-4 bg-slate-50 border-t border-slate-200 text-xs text-slate-600 space-y-2">
         <div className="font-bold text-slate-800 flex items-center gap-1.5">
           <Info className="w-4 h-4 text-blue-600" />
-          <span>[전문 CFO 임직원 인력 확충 및 4대 보험 정산 반영 감사 주석]</span>
+          <span>[전문 CFO 사무실 개설(3천만)·인력 확충·4대 보험 정산 반영 감사 주석]</span>
         </div>
         <p className="text-slate-600 leading-relaxed text-xs">
-          <strong>인력 확충 및 임금 인상 반영:</strong> 2차년도 평생교육사(월 300만 원으로 상향) 및 일반직원 1명(월 270만 원) 신규 채용, 3차년도 일반직원 1명 추가(월 270만 원)와 3년간 매년 5% 임금 인상률, <strong>4대 보험 사측 부담금(9.5% 정산)</strong>을 전액 계상하였습니다.<br />
-          판관비 인건비가 5차년도 기준 1.71억 원까지 증액되었음에도, 온라인 원격교육 수강생 누적(과정당 2,000명 × 6만 원)에 따른 <strong>인당 33,000원의 회사 유보 마진</strong> 덕분에 <strong>5년간 총 6억 2,500만 원의 투자자 배당</strong>을 전액 지급하고도 5차년도 말 자본금 잔액 <strong>1억 8,486만 원(자본 보존율 61.6%)</strong>을 확고하게 지켜냅니다.
+          <strong>초기 시설투자 및 운영비 현실화:</strong> 1차년도 사무실 임차보증금(1,000만 원, 자산)과 집기·비품(2,000만 원, 5년 상각) 총 3,000만 원의 초기 지출, 전담관리자 법인카드 월 70만 원 한도(유류비·식대·접대비, 연 840만 원), 사무용품비(월 5만 원, 연 60만 원)를 전액 반영하였습니다.<br />
+          <strong>인력 확충 및 임금 인상:</strong> 2차년도 평생교육사(월 300만 원) 및 일반직원 1명(월 270만 원) 신규 채용, 3차년도 일반직원 1명 추가(월 270만 원)와 3년간 매년 5% 임금 인상률, <strong>4대 보험 사측 부담금(9.5% 정산)</strong>을 완벽히 계상하였습니다.<br />
+          이러한 투자 지출과 함께 <strong>5년간 총 6억 2,500만 원의 투자자 배당</strong>을 전액 지급하고도, 원격교육의 높은 사내 마진(인당 33,000원) 덕분에 5차년도 말 자본금 잔액 <strong>1억 5,786만 원(보존율 52.6%)</strong> 및 보증금 자산 1,000만 원을 견고하게 보유합니다.
         </p>
       </div>
     </div>

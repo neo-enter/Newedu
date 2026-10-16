@@ -7,14 +7,19 @@ export const DEFAULT_PARAMS: SimulationParams = {
   eventCost: 2_000_000,             // 1회당 행사비용 200만 원
   traineesPerEvent: 100,            // 회당 100명 (50회)
 
-  // 인력 계획 및 급여 (사용자 최종 확정안 반영)
+  // 사무실 개설 및 운영 비용 (사용자 최신 요청 반영)
+  officeDeposit: 10_000_000,              // 사무실 보증금 1천만 원
+  officeFurnishings: 20_000_000,          // 집기/비품/인테리어 2천만 원 (합계 3천만 원)
+  monthlyOfficeSupplies: 50_000,          // 사무용품 구입비 월 5만 원 (연 60만 원)
+  managerCorporateCardMonthly: 700_000,   // 법인카드 한도 월 70만 원 (유류비, 식대, 접대비)
+
+  // 인력 계획 및 급여 (평생교육사 300만, 일반직원 270만 시작 5% 인상)
   managerMonthlySalary: 3_000_000,        // 전담관리자 기본급 월 300만 (연 3,600만)
   educatorMonthlySalary: 3_000_000,       // 평생교육사 기본급 2차년도부터 월 300만 (연 3,600만)
   regularStaff1StartingSalary: 2_700_000, // 일반직원 1 신규채용 (2차년도 세전 월 270만)
   regularStaff2StartingSalary: 2_700_000, // 일반직원 2 신규채용 (3차년도 세전 월 270만)
   wageHikeRate: 0.05,                     // 일반직원 2명 3년간 매년 5% 임금 인상률
   socialInsuranceRate: 0.095,             // 4대 보험 사측 부담금 정산 요율 9.5%
-  managerCorporateCardMonthly: 800_000,   // 전담관리자 법카 (식대, 음료, 접대) 월 80만원
   educatorMealMonthly: 200_000,           // 평생교육사 비과세 식대보조금 월 20만원
 
   // 온라인 원격 교육 확정 조건 (수강료 6만원, 투자자 배당 1인당 2.5만원)
@@ -35,8 +40,10 @@ export const DEFAULT_PARAMS: SimulationParams = {
 
 export function calculateFinancials(params: SimulationParams): YearFinancials[] {
   const managerAnnual = params.managerMonthlySalary * 12; // 36,000,000원
-  const managerCardAnnual = params.managerCorporateCardMonthly * 12; // 9,600,000원
+  const managerCardAnnual = params.managerCorporateCardMonthly * 12; // 8,400,000원 (월 70만)
   const educatorMealAnnual = params.educatorMealMonthly * 12; // 2,400,000원
+  const annualOfficeSupplies = params.monthlyOfficeSupplies * 12; // 600,000원 (월 5만)
+  const furnishingsDepreciation = Math.round(params.officeFurnishings / 5); // 4,000,000원 (5년 정액 상각)
 
   // 오프라인 기본 사업 (매년 동일: 5,000명 / 50회)
   const offlineTrainees = params.offlineTraineeCount; // 5,000명
@@ -55,6 +62,8 @@ export function calculateFinancials(params: SimulationParams): YearFinancials[] 
     let activeContentCount = 0;
     let initialServerSetup = 0;
     let serverMaint = params.serverFixedCost;
+    let officeDepositOutflow = 0;
+    let officeFurnishingsOutflow = 0;
 
     // 직원 급여 및 인력 계산
     let staffCount = 1;
@@ -72,10 +81,14 @@ export function calculateFinancials(params: SimulationParams): YearFinancials[] 
       educatorMeal = 0;
       initialServerSetup = params.year1ServerSetupCost; // 15,000,000원
       serverMaint = 10_000_000;
-      stage = '1차년도: 전담관리자 1명 + 1차 콘텐츠 R&D (오프라인 5천명 개시)';
+      officeDepositOutflow = params.officeDeposit; // 10,000,000원
+      officeFurnishingsOutflow = params.officeFurnishings; // 20,000,000원
+      stage = '1차년도: 사무실 개설(3천만) + 전담관리자 1명 + 1차 콘텐츠 R&D';
       keyActivities = [
         '자본금 3억 원 법인 설립 등기 완료',
-        '전담 관리자 1명 채용 (월 300만, 4대보험, 법카 80만)',
+        '사무실 임차보증금(1,000만 원) 및 집기·비품(2,000만 원) 3,000만 원 투자 집행',
+        '전담 관리자 1명 채용 (월 300만, 4대보험, 법카 70만 한도 유류·식대·접대)',
+        '사무용품 구입비(월 5만 원 = 연 60만 원) 집행',
         '1차 30시간 온라인 콘텐츠 개발 (2,000만 원 R&D)',
         'LMS 시스템 및 웹서버 1차 구축 (1,500만 원)',
         '공단 지원금 수령 개시: 연인원 5,000명 (50회 교육)',
@@ -95,6 +108,7 @@ export function calculateFinancials(params: SimulationParams): YearFinancials[] 
         '평생교육사 1명 채용 (월 300만 원으로 상향 책정, 식대보조 20만)',
         '일반 직원 1명 신규 채용 (세전 월 270만 원 = 연 3,240만 원)',
         '총 3명 임직원 4대 보험(9.5%, 연 992만 원) 정산 납부',
+        '법카 유류·식대·접대비(연 840만) 및 사무용품비(연 60만) 집행',
         '1차 온라인 콘텐츠 서비스 개시 (2,000명 × 6만 원 = 1억 2,000만 원)',
         '2번째 추가 콘텐츠 개발 착수 (개발비 2,000만 원)',
         '투자자 배당: 오프라인 2,500만 + 온라인 5,000만(인당 2.5만) = 총 7,500만 원 지급'
@@ -115,7 +129,7 @@ export function calculateFinancials(params: SimulationParams): YearFinancials[] 
         '온라인 2개 과정 누적 (4,000명 × 6만 원 = 2억 4,000만 원)',
         '3번째 추가 콘텐츠 개발 (개발비 2,000만 원)',
         '투자자 배당: 오프라인 2,500만 + 온라인 1.0억 = 총 1억 2,500만 원 지급',
-        '인력 확충에도 영업이익 +7,343만 원 흑자 달성'
+        '영업이익 +7,003만 원 흑자 달성 및 자본금 저점 안전 통과'
       ];
       activeContentCount = params.contentLaunchSpeed === 'immediate' ? 3 : 2;
     } else if (y === 4) {
@@ -132,7 +146,7 @@ export function calculateFinancials(params: SimulationParams): YearFinancials[] 
         '온라인 3개 과정 누적 (6,000명 × 6만 원 = 3억 6,000만 원)',
         '4번째 추가 콘텐츠 개발 (개발비 2,000만 원)',
         '투자자 배당: 오프라인 2,500만 + 온라인 1.5억 = 총 1억 7,500만 원 지급',
-        '연간 영업이익 1억 8,479만 원 달성 및 당기 순현금흐름(+979만 원) 반등 개시'
+        '연간 영업이익 1억 8,139만 원 달성 및 당기 순현금흐름(+1,039만 원) 반등 개시'
       ];
       activeContentCount = params.contentLaunchSpeed === 'immediate' ? 4 : 3;
     } else {
@@ -142,7 +156,7 @@ export function calculateFinancials(params: SimulationParams): YearFinancials[] 
       staff2Salary = Math.round(params.regularStaff2StartingSalary * Math.pow(1 + params.wageHikeRate, 2)) * 12; // 월 297.675만 = 35,721,000원
       educatorMeal = educatorMealAnnual;
       serverMaint = 27_000_000;
-      stage = '5차년도: 플랫폼 완성기 + 직원 5% 인상 완성 + 연 영업이익 2.96억 원 달성';
+      stage = '5차년도: 플랫폼 완성기 + 직원 5% 인상 완성 + 연 영업이익 2.93억 원 달성';
       keyActivities = [
         '일반 직원 1 (3년간 매년 5% 인상 완성, 연 3,751만) & 직원 2 (2년차 5% 인상, 연 3,572만)',
         '4명 임직원 4대 보험 정산 납부 (연 1,380만 원)',
@@ -150,7 +164,7 @@ export function calculateFinancials(params: SimulationParams): YearFinancials[] 
         '5번째 추가 콘텐츠 개발 (개발비 2,000만 원)',
         '투자자 배당: 오프라인 2,500만 + 온라인 2억 = 총 2억 2,500만 원 지급',
         '5개년 누적 투자자 배당 6억 2,500만 원 전액 환원 완료 (원금 3억 대비 208.3% 배당 회수)',
-        '연간 영업이익 2억 9,598만 원 달성 및 기말 자본금 잔액 1억 8,486만 원 유지'
+        '연간 영업이익 2억 9,258만 원 달성 및 기말 자본금 잔액 1억 5,786만 원 유지'
       ];
       activeContentCount = params.contentLaunchSpeed === 'immediate' ? 5 : 4;
     }
@@ -176,15 +190,20 @@ export function calculateFinancials(params: SimulationParams): YearFinancials[] 
     const grossMargin = (totalGross / totalRev) * 100;
 
     const contentDevCost = params.annualContentDevCost; // 매년 2,000만 원
-    const totalSga = laborAndWelfare + contentDevCost + initialServerSetup + serverMaint;
+    // SG&A = 인건비/복리후생 + 사무용품비(연 60만) + 집기비품 5년 상각(연 400만) + 콘텐츠R&D + 서버구축/운영비
+    const totalSga = laborAndWelfare + annualOfficeSupplies + furnishingsDepreciation + contentDevCost + initialServerSetup + serverMaint;
 
     const opProfit = totalGross - totalSga;
     const opMargin = (opProfit / totalRev) * 100;
     const netProfit = opProfit;
 
-    // 현금흐름 (오프라인 배당 + 온라인 콘텐츠 배당 전액 현금 유출)
+    // 현금흐름 (1차년도 사무실 보증금 1천만 + 집기비품 2천만 현금 지출 반영)
     const cashInflow = totalRev;
-    const cashOutflow = totalCogs + totalSga + totalInvestorDividend;
+    // 1차년도는 집기비품 현금유출 2천만 원과 보증금 1천만 원이 유출되고, 감가상각비 4백만 원은 비현금비용이므로 조정
+    const cashOutflow = y === 1
+      ? totalCogs + (totalSga - furnishingsDepreciation) + officeDepositOutflow + officeFurnishingsOutflow + totalInvestorDividend
+      : totalCogs + (totalSga - furnishingsDepreciation) + totalInvestorDividend;
+
     const netCash = cashInflow - cashOutflow;
     const closingCash = prevClosingCash + netCash;
     const depletion = ((params.initialCapital - closingCash) / params.initialCapital) * 100;
@@ -229,6 +248,8 @@ export function calculateFinancials(params: SimulationParams): YearFinancials[] 
       managerCorporateCardCost: managerCardAnnual,
       educatorMealAllowance: educatorMeal,
       totalLaborAndWelfareCost: laborAndWelfare,
+      officeSuppliesCost: annualOfficeSupplies,
+      officeFurnishingsDepreciation: furnishingsDepreciation,
       annualContentDevCost: contentDevCost,
       initialServerSetupCost: initialServerSetup,
       serverAndFixedCost: serverMaint,
@@ -236,6 +257,8 @@ export function calculateFinancials(params: SimulationParams): YearFinancials[] 
       operatingProfit: opProfit,
       operatingMarginPct: opMargin,
       netProfit,
+      officeDepositOutflow,
+      officeFurnishingsOutflow,
       cashInflow,
       cashOutflow,
       netCashFlow: netCash,
@@ -248,29 +271,27 @@ export function calculateFinancials(params: SimulationParams): YearFinancials[] 
 }
 
 export function calculateBEP(params: SimulationParams) {
-  // 2차년도 기준 고정비: 관리자(3,600만) + 평생교육사(3,600만) + 일반직원1(3,240만) = 급여 104,400,000원
-  // 4대보험(9.5%): 9,918,000원 + 법카/식대(1,200만) = 인건비소계 126,318,000원
   const managerAnnual = params.managerMonthlySalary * 12;
   const educatorAnnual = params.educatorMonthlySalary * 12;
   const staff1Annual = params.regularStaff1StartingSalary * 12;
   const grossY2 = managerAnnual + educatorAnnual + staff1Annual;
   const socialIns = Math.round(grossY2 * params.socialInsuranceRate);
   const welfare = (params.managerCorporateCardMonthly * 12) + (params.educatorMealMonthly * 12);
-  const totalLaborWelfareY2 = grossY2 + socialIns + welfare; // 126,318,000원
+  const totalLaborWelfareY2 = grossY2 + socialIns + welfare; // 125,118,000원
   
-  const fixedCost = totalLaborWelfareY2 + params.annualContentDevCost + params.serverFixedCost; // 166,318,000원
+  const annualOfficeSupplies = params.monthlyOfficeSupplies * 12;
+  const furnishingsDepreciation = Math.round(params.officeFurnishings / 5);
+  const fixedCost = totalLaborWelfareY2 + annualOfficeSupplies + furnishingsDepreciation + params.annualContentDevCost + params.serverFixedCost; // 169,718,000원
 
   const offlineCM = params.grantPerTrainee - (params.eventCost / params.traineesPerEvent); // 10,000원
-  // 온라인 1인당 공헌이익 (수강료 6만 - 플랫폼원가 2천)
   const onlineCM = params.contentRevenuePerTrainee - params.contentMarginalCost; // 58,000원
-  // 1인당 2.5만 원 배당 지급 후 사내 유보 순마진
   const onlineRetainedCM = onlineCM - params.contentDividendPerTrainee; // 33,000원
 
   const y2OfflineCMTotal = params.offlineTraineeCount * offlineCM; // 50,000,000
   const y2OnlineCMTotal = 1 * params.traineesPerContent * onlineCM; // 116,000,000
   const y2TotalCM = y2OfflineCMTotal + y2OnlineCMTotal; // 166,000,000원
 
-  const y2OperatingProfit = y2TotalCM - fixedCost; // -318,000원
+  const y2OperatingProfit = y2TotalCM - fixedCost; // -3,718,000원
 
   return {
     fixedCost,

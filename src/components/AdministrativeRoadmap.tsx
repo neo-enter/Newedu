@@ -46,7 +46,17 @@ export const AdministrativeRoadmap: React.FC = () => {
               <div>
                 <strong className="text-slate-900 block">자본금 또는 자산 3억 원 이상 (법정 요건 충족)</strong>
                 <p className="text-slate-600 text-[11px] mt-0.5">
-                  법인등기부등본상 자본금 3억 원으로 법정 요건 100% 충족. 5개년 동안 자본금 잔액이 최저 1.88억 원 이상 안전하게 유지되어 결격 사유 없음.
+                  법인등기부등본상 자본금 3억 원으로 법정 요건 100% 충족. 자본금 잔액 및 임차보증금 자산으로 결격 사유 없음.
+                </p>
+              </div>
+            </div>
+
+            <div className="p-3 rounded-lg bg-slate-50 border border-slate-200 flex items-start gap-2.5">
+              <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+              <div>
+                <strong className="text-slate-900 block">전용 사무공간 및 집기·비품 설비 완비 (초기 3천만 원)</strong>
+                <p className="text-slate-600 text-[11px] mt-0.5">
+                  임차보증금 1,000만 원 전용 사무실 확보 및 집기·비품·전산 설비 2,000만 원 완비로 교육지원청 현장 실사 시설 기준 100% 충족.
                 </p>
               </div>
             </div>
